@@ -9,32 +9,32 @@ export default class SwapiServece {
     return await res.json();
   }
 
-  async getAllPeople() {
+  getAllPeople = async () => {
     const res = await this.getResourse(`/people/`);
     return res.results.map(this._transformPerson);
-  }
+  };
 
-  async getPerson(id) {
+  getPerson = async (id) => {
     const res = await this.getResourse(`/people/${id}/`);
     return this._transformPerson(res);
   }
 
-  async getAllPlanets() {
+  getAllPlanets = async () => {
     const res = await this.getResourse(`/planets/`);
     return res.results.map(this._transformPlanet);
   }
 
-  async getPlanet(id) {
+  getPlanet = async (id) => {
     const planet = await this.getResourse(`/planets/${id}/`);
     return this._transformPlanet(planet);
   }
 
-  async getAllStarships() {
+  getAllStarships = async () => {
     const res = await this.getResourse(`/starships/`);
     return res.results.map(this._transformStarship);
   }
 
-  async getStarship(id) {
+  getStarship = async (id) => {
     const starship = await this.getResourse(`/starships/${id}/`);
     return this._transformStarship(starship);
   }
@@ -73,8 +73,8 @@ export default class SwapiServece {
       id: this._extractId(person),
       name: person.name,
       gender: person.gender,
-      birthYear: person.birthYear,
-      eyeColor: person.eyeColor
+      birthYear: person.birth_year,
+      eyeColor: person.eye_color
     }
   }
 }
