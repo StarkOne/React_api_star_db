@@ -1,28 +1,28 @@
-import React, { Component } from 'react';
-import SwipeService from '../../services/swapi-service';
-import Spinner from '../spinner';
-import './random-planet.css';
-import ErrorIndicator from '../error-indicator';
+import React, { Component } from "react";
+import SwipeService from "../../services/swapi-service";
+import Spinner from "../spinner";
+import "./random-planet.css";
+import ErrorIndicator from "../error-indicator";
 
 export default class RandomPlanet extends Component {
-  swapiServece = new SwipeService()
+  swapiServece = new SwipeService();
   state = {
     planet: {},
-    loading: true,
-  }
+    loading: true
+  };
 
-  onPlanetLoader = (planet) => {
+  onPlanetLoader = planet => {
     this.setState({
       planet,
       loading: false,
       error: false
-    })
+    });
   };
-  onError = (err) => {
+  onError = err => {
     this.setState({
       error: true,
-      loading: false,
-    })
+      loading: false
+    });
   };
 
   updatePlanet = () => {
@@ -30,11 +30,11 @@ export default class RandomPlanet extends Component {
     this.swapiServece
       .getPlanet(id)
       .then(this.onPlanetLoader)
-      .catch(this.onError)
-  }
+      .catch(this.onError);
+  };
 
   componentDidMount() {
-    console.log('didMount');
+    console.log("didMount");
     this.updatePlanet();
     this.interval = setInterval(this.updatePlanet, 4000);
   }
@@ -59,12 +59,14 @@ export default class RandomPlanet extends Component {
   }
 }
 
-const PlanetView = ({planet}) => {
+const PlanetView = ({ planet }) => {
   const { id, name, population, rotationPeriod, diameter } = planet;
   return (
     <React.Fragment>
-      <img className="planet-image"
-        src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
+      <img
+        className="planet-image"
+        src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+      />
       <div>
         <h4>{name}</h4>
         <ul className="list-group list-group-flush">
@@ -84,4 +86,4 @@ const PlanetView = ({planet}) => {
       </div>
     </React.Fragment>
   );
-}
+};
