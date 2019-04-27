@@ -1,55 +1,57 @@
 import React, { Component } from "react";
 
-import "./person-details.css";
+import "./item-details.css";
 import SwapiServece from "../../services/swapi-service";
 import Spinner from "../spinner";
 
-export default class PersonDetails extends Component {
+export default class ItemDetails extends Component {
   swapiService = new SwapiServece();
 
   state = {
-    person: null,
-    isLoading: false
+    item: null,
+    isLoading: false,
+    image: null,
   };
   componentDidMount() {
-    this.updatePerson();
+    this.updateItem();
   }
-  updatePerson = () => {
-    const { personId } = this.props;
-    if (!personId) {
+  updateItem = () => {
+    const { itemId, getData, getImageUrl } = this.props;
+    console.log(itemId);
+    if (!itemId) {
       return;
     }
     setTimeout(() => {
-      this.swapiService.getPerson(personId).then(person => {
+      getData(itemId).then(item => {
         this.setState({
-          person,
+          item,
+          image: getImageUrl(item),
           isLoading: false
         });
       });
     }, 1000);
   };
   componentDidUpdate(prevProps) {
-    console.log(prevProps);
-    if (this.props.personId !== prevProps.personId) {
+    if (this.props.itemId !== prevProps.itemId) {
       this.setState({ isLoading: true });
-      this.updatePerson();
+      this.updateItem();
     }
   }
   render() {
-    if (!this.state.person && !this.state.isLoading) {
-      return <span>Select a person from a list</span>;
+    if (!this.state.item && !this.state.isLoading) {
+      return <span>Select a item from a list</span>;
     }
     if (this.state.isLoading) {
       return <Spinner />;
     }
-    const { id, name, gender, birthYear, eyeColor } = this.state.person;
+    const { id, name, gender, birthYear, eyeColor } = this.state.item;
     return (
-      <div className="person-details card">
+      <div className="item-details card">
         <img
-          className="person-image"
-          src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
+          className="item-image"
+          src={this.state.image}
+          alt={name}
         />
-
         <div className="card-body">
           <h4>{name}</h4>
           <ul className="list-group list-group-flush">

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ItemList from "../item-list";
-import PersonDetails from "../person-details";
+import ItemDetails from "../item-details";
 import "./people-page.css";
 import SwapiServece from "../../services/swapi-service";
 import Row from "../row";
@@ -11,14 +11,10 @@ export default class PeoplePage extends Component {
   swapiService = new SwapiServece();
 
   state = {
-    selectedPerson: null
+    selectedPerson: null,
   };
-  onPersonSelered = id => {
-    this.setState(state => {
-      return {
-        selectedPerson: id
-      };
-    });
+  onPersonSelered = (selectedPerson) => {
+    this.setState({ selectedPerson });
   };
 
   render() {
@@ -31,12 +27,16 @@ export default class PeoplePage extends Component {
       </ItemList>
     );
 
-    const personDetails = (
+    const itemDet = (
       <ErrorBoundry>
-        <PersonDetails personId={this.state.selectedPerson} />
+        <ItemDetails 
+          itemId={this.state.selectedPerson} 
+          getData={this.swapiService.getPerson}
+          getImageUrl={this.swapiService.getStarshipImage}
+        />
       </ErrorBoundry>
     );
 
-    return <Row left={itemList} right={personDetails} />;
+    return <Row left={itemList} right={itemDet} />;
   }
 }
